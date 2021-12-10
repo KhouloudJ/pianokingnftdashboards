@@ -1,6 +1,6 @@
 import pandas as pd
 from etherscan import Etherscan
-import app as st
+import streamlit as st
 import matplotlib
 import matplotlib.pyplot as plt
 matplotlib.style.use('ggplot')
