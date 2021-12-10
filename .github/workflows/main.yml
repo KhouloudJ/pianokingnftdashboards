@@ -3,16 +3,17 @@
 name: CI
 
 # Controls when the workflow will run
-on: push
+on: 
+# Trigger the workflow on push request,
+  push:
+    branches:
+      - main
+      - features/*
 jobs:
   test:
     strategy:
       matrix:
         platform: [ubuntu-latest]
-    runs-on: $
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@main
-    - uses: actions/setup-node@main
-      with:
-        version: 12
     - run: pip3 install -r requirements.txt
