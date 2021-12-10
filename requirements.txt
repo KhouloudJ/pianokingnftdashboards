@@ -5,4 +5,5 @@ etherscan-python==2.1.0
 plotly_express==0.4.1
 streamlit==1.2.0
 python-igraph==0.9.8
+matplotlib==3.5.0
 

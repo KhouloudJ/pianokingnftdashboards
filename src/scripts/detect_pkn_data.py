@@ -4,6 +4,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from etherscan import Etherscan
 import numpy as np
+import datetime
+import matplotlib.pyplot as plt
 
 
 class ContractWrapper:
@@ -39,13 +41,27 @@ def detect_params():
     df_pkg = pd.DataFrame(columns=['address', 'nbtoken', 'NumNFT', 'FirstTimeOwner'])
     for _, wl in enumerate(wls):
         nb = wrapper.contract.functions.getWhitelistAllowance(wl).call()
+        
         nftOwners = eth.get_erc721_token_transfer_events_by_address(address = wl, startblock = 0, endblock= enumerate(wl), sort = "yes")
+        lst=[]
+        for item in enumerate(nftOwners):
+            
+            date = datetime.datetime.fromtimestamp(int(item[1]['timeStamp'])).strftime('%Y-%m-%d %H:%M:%S')
+            item[1]['date'] = date
+        nftOwners.sort(key = lambda x:x['date'])
 
-        if len(nftOwners)>1:
-            FirstTimeOwner = False
-        else: 
-            FirstTimeOwner = True
-            n+=1
+        for item in enumerate(nftOwners):
+            print(item)
+            if item[1]['tokenSymbol'] == 'PK':
+                FirstTimeOwner = True
+            else: 
+                FirstTimeOwner = False
         df_pkg = df_pkg.append([{'address': (wl), 'nb_token': nb, 'NumNFT': len(nftOwners), 'FirstTimeOwner' : FirstTimeOwner}])
         df_pkg.to_csv('resources/output/pianoking_data.csv')
 
+# def calcul_pk_primowallet():
+df = pd.read_csv('resources/output/pianoking_data.csv', sep=',')
+# print('df is : ', df)
+print(df['FirstTimeOwner'].value_counts())
+print(df.count())
+df.plot.bar()
