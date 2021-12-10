@@ -16,5 +16,10 @@ jobs:
         platform: [ubuntu-latest]
     runs-on: ubuntu-latest
     steps:
-    - run : ls
-    - run: pip3 install -r ../../requirements.txt
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+          pip3 install -r  ${{ github.workspace }}/requirements.txt
+      - run: echo "🍏 This job's status is ${{ job.status }}."
