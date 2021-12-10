@@ -3,7 +3,7 @@
 name: CI
 
 # Controls when the workflow will run
-oon: push
+on: push
 jobs:
   test:
     strategy:
