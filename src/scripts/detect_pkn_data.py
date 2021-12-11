@@ -58,10 +58,3 @@ def detect_params():
                 FirstTimeOwner = False
         df_pkg = df_pkg.append([{'address': (wl), 'nb_token': nb, 'NumNFT': len(nftOwners), 'FirstTimeOwner' : FirstTimeOwner}])
         df_pkg.to_csv('resources/output/pianoking_data.csv')
-
-# def calcul_pk_primowallet():
-df = pd.read_csv('resources/output/pianoking_data.csv', sep=',')
-# print('df is : ', df)
-print(df['FirstTimeOwner'].value_counts())
-print(df.count())
-df.plot.bar()
