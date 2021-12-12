@@ -23,4 +23,7 @@ jobs:
           ls ${{ github.workspace }}
           pip3 install -r  ${{ github.workspace }}/requirements.txt
           python3 ${{ github.workspace }}/src/scripts/detect_pkn_data.py
+      - name: Push changes to server
+        run: |
+          git push heroku main
       - run: echo "🍏 This job's status is ${{ job.status }}."
