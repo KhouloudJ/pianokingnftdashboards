@@ -38,7 +38,7 @@ def detect_params():
     wls = wrapper.contract.functions.getWhitelistedAddresses().call()
     FirstTimeOwner = True
     n=0
-    df_pkg = pd.DataFrame(columns=['address', 'nbtoken', 'NumNFT', 'FirstTimeOwner'])
+    df_pkg = pd.DataFrame(columns=['address', 'nbtoken', 'NumNFT', 'FirstTimeOwner', 'FirstTokenName', 'FirstTokenSymbol'])
     for _, wl in enumerate(wls):
         nb = wrapper.contract.functions.getWhitelistAllowance(wl).call()
         
@@ -48,13 +48,17 @@ def detect_params():
             
             date = datetime.datetime.fromtimestamp(int(item[1]['timeStamp'])).strftime('%Y-%m-%d %H:%M:%S')
             item[1]['date'] = date
+        
         nftOwners.sort(key = lambda x:x['date'])
+        FirstTokenName = nftOwners[0]['tokenName']
+        FirstTokenSymbol = nftOwners[0]['tokenSymbol']
 
-        for item in enumerate(nftOwners):
-            print(item)
-            if item[1]['tokenSymbol'] == 'PK':
-                FirstTimeOwner = True
-            else: 
-                FirstTimeOwner = False
-        df_pkg = df_pkg.append([{'address': (wl), 'nb_token': nb, 'NumNFT': len(nftOwners), 'FirstTimeOwner' : FirstTimeOwner}])
+        if FirstTokenSymbol == 'PK':
+            FirstTimeOwner = True
+        else:
+            FirstTimeOwner = False
+        df_pkg = df_pkg.append([{'address': (wl), 'nb_token': nb, 'NumNFT': len(nftOwners), 'FirstTimeOwner' : FirstTimeOwner, 'FirstTokenName': FirstTokenName, 'FirstTokenSymbol': FirstTokenSymbol}])
         df_pkg.to_csv('resources/output/pianoking_data.csv')
+
+if __name__ == '__main__':
+    detect_params()

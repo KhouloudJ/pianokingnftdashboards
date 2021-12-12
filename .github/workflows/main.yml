@@ -22,4 +22,5 @@ jobs:
         run: |
           ls ${{ github.workspace }}
           pip3 install -r  ${{ github.workspace }}/requirements.txt
+          python3 ${{ github.workspace }}/src/scripts/detect_pkn_data.py
       - run: echo "🍏 This job's status is ${{ job.status }}."
