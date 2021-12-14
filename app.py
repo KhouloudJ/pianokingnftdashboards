@@ -6,13 +6,15 @@ import matplotlib
 import matplotlib.pyplot as plt
 matplotlib.style.use('ggplot')
 
+path_raw_data = "resources/output/pianoking_data.csv"
+path_transac_history = "resources/output/transac_history_by_PK_NFT_ID.csv"
 def fmt(x):
     print(x)
     return '{:.4f}%\n({:.0f})'.format(x, total*x/100)
 
 st.title('Piano King NFT Dashboard')
 
-df = pd.read_csv('resources/output/pianoking_data.csv', sep=',')
+df = pd.read_csv(path_raw_data , sep=',')
 
 
 
@@ -29,7 +31,7 @@ st.subheader('Piano King holders repartition')
 pk_nft_repartition = pd.Series(df['FirstTimeOwner'])
 
 # Import du csv en ométtant la première colonne d'index
-df_transac_hist = pd.read_csv("C:/01. DataIDraw/11. Developpement cours/05. PianoKing NFT/transac_history_by_PK_NFT_ID.csv", index_col=[0])
+df_transac_hist = pd.read_csv(path_transac_history, index_col=[0])
 # Trick pour convertir la colonne Price en float64 (à convertir direct lors du scrap la prochaine fois)
 df_transac_hist["Price"] = df_transac_hist["Price"].fillna(0)
 df_transac_hist["Price"] = df_transac_hist["Price"].apply(lambda x : float(x.replace(",", ".")) if type(x) == str else x)
