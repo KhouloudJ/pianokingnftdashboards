@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Install Heroku
+        run: curl https://cli-assets.heroku.com/install.sh | sh
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
