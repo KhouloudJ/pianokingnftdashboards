@@ -80,7 +80,7 @@ def detect_params():
 
         df_raw = pd.DataFrame(nftOwners, columns = ['blockNumber','timeStamp','hash','nonce','blockHash','from','contractAddress','to','tokenID','tokenName','tokenSymbol','tokenDecimal','transactionIndex','gas','gasPrice','gasUsed','cumulativeGasUsed','input','confirmations','date','address', 'status'])
 
-        df_pkg = df_pkg.append([{'address': (wl), 'nb_token': nb, 'FirstTimeOwner' : FirstTimeOwner, 'FirstTokenName': FirstTokenName, 'FirstTokenSymbol': FirstTokenSymbol, 'NumNFT': i , 'TotalPianoKingNFT': n , 'TotalPKMint': k, 'TotalPKBurn': j }])
+        df_pkg = df_pkg.append([{'address': (wl), 'nb_token': nb, 'FirstTimeOwner' : FirstTimeOwner, 'FirstTokenName': FirstTokenName, 'FirstTokenSymbol': FirstTokenSymbol, 'NumNFT': len(nftOwners) , 'TotalPianoKingNFT': n , 'TotalPKMint': k, 'TotalPKBurn': j }])
         df_pkg.to_csv('resources/output/pianoking_data.csv')
         df_raw = df_raw.to_csv('resources/output/raw_data.csv',  mode='a', header=False)
 
