@@ -24,4 +24,5 @@ plt.show()
 st.subheader('Piano King Primo Wallet Holders')
 st.pyplot(fig)
 
-st.subheader('Pa')
+st.subheader('Piano King holders repartition')
+pk_nft_repartition = pd.Series(df['FirstTimeOwner'])

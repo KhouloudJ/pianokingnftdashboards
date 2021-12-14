@@ -39,14 +39,16 @@ def detect_params():
     eth = Etherscan("TMEEV5AC6X3HY2MJRRWHURBEBA5VSYJ6FI") 
     wls = wrapper.contract.functions.getWhitelistedAddresses().call()
     FirstTimeOwner = True
-    df_pkg = pd.DataFrame(columns=['address', 'nbtoken', 'FirstTimeOwner', 'FirstTokenName', 'FirstTokenSymbol', 'NumNFT','TotalPianoKingNFT', 'TotalPKMint', 'TotalPKBurn' ])
+    df_pkg = pd.DataFrame(columns=['address', 'nbtoken', 'FirstTimeOwner', 'FirstTokenName', 'FirstTokenSymbol', 'NumTxn','TotalPianoKingNFT', 'TotalPKMint', 'TotalPKBurn' ])
     with open('resources/output/raw_data.csv', 'w') as f:
         f.write(',blockNumber,timeStamp,hash,nonce,blockHash,from,contractAddress,to,tokenID,tokenName,tokenSymbol,tokenDecimal,transactionIndex,gas,gasPrice,gasUsed,cumulativeGasUsed,input,confirmations,date,address,status') 
         f.write('\n') 
     for _, wl in enumerate(wls):
+        # print(wl)
         n=0
         k=0
         j=0
+        c = 0
         nb = wrapper.contract.functions.getWhitelistAllowance(wl).call()
         
         nftOwners = eth.get_erc721_token_transfer_events_by_address(address = wl, startblock = 0, endblock= enumerate(wl), sort = "yes")
@@ -66,21 +68,35 @@ def detect_params():
             FirstTimeOwner = False
         for i in range(len(nftOwners)):
             nftOwners[i]['address'] = wl
+            print(nftOwners[i]['to'])
+            if nftOwners[i]['tokenSymbol'] == 'PK':
+                n+=1
+                # if nftOwners[i]["to"].startswith('0x000000000000000000000000000000000'):
+                #     nftOwners[i]["status"] = "burn"
+                #     k+=1
+                
+                if nftOwners[i]["to"].strip() is wl :
+                    print(wl)
+                    if nftOwners[i]['tokenSymbol'] == 'PK':
+                        c+=1
             if nftOwners[i]["from"].startswith('0x000000000000000000000000000000000'):
                 nftOwners[i]["status"] = "mint"
                 if nftOwners[i]['tokenSymbol'] == 'PK':
-                    n+=1
-            elif nftOwners[i]["to"].startswith('0x000000000000000000000000000000000'):
-                nftOwners[i]["status"] = "burn"
-                if nftOwners[i]['tokenSymbol'] == 'PK':
-                    k+=1
-            elif nftOwners[i]['tokenSymbol'] == 'PK':
-                j+=1
+                    j+=1
+            # if nftOwners[i]["to"].startswith('0x000000000000000000000000000000000'):
+            #     nftOwners[i]["status"] = "burn"
+            #     if nftOwners[i]['tokenSymbol'] == 'PK':
+            #         k+=1
+
+                    
+
+            
             
 
         df_raw = pd.DataFrame(nftOwners, columns = ['blockNumber','timeStamp','hash','nonce','blockHash','from','contractAddress','to','tokenID','tokenName','tokenSymbol','tokenDecimal','transactionIndex','gas','gasPrice','gasUsed','cumulativeGasUsed','input','confirmations','date','address', 'status'])
 
-        df_pkg = df_pkg.append([{'address': (wl), 'nb_token': nb, 'FirstTimeOwner' : FirstTimeOwner, 'FirstTokenName': FirstTokenName, 'FirstTokenSymbol': FirstTokenSymbol, 'NumNFT': len(nftOwners) , 'TotalPianoKingNFT': n , 'TotalPKMint': k, 'TotalPKBurn': j }])
+
+        df_pkg = df_pkg.append([{'address': (wl), 'nb_token': nb, 'FirstTimeOwner' : FirstTimeOwner, 'FirstTokenName': FirstTokenName, 'FirstTokenSymbol': FirstTokenSymbol, 'NumTxn': len(nftOwners) , 'TotalPianoKingNFT': n , 'TotalPKMint': k, 'TotalPKBurn': c }])
         df_pkg.to_csv('resources/output/pianoking_data.csv')
         df_raw = df_raw.to_csv('resources/output/raw_data.csv',  mode='a', header=False)
 
