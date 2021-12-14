@@ -79,22 +79,24 @@ without_hue(
     "Event", 
     x_axis_rotation=0
 )
+st.pyplot()
 
 # Quel est le prix moyen d'une mise à la vente d'un NFT ?
 
 # 1 - Calcul du prix moyen de mise en vente global
 prix_moyen_enchere_global = df_transac_hist_nodup.where(df_transac_hist_nodup["Event"] == "List").groupby(["Event"])["Price"].mean()
 prix_median_enchere_global = df_transac_hist_nodup.where(df_transac_hist_nodup["Event"] == "List").groupby(["Event"])["Price"].median()
+print(prix_moyen_enchere_global)
+print(prix_median_enchere_global)
 
 # Quel est le top 3 des NFT qui ont reçu le plus d'offre ?
 df_offer = df_transac_hist_nodup.where(df_transac_hist_nodup["Event"] == "Offer").groupby(["TokenID"]).agg({"Price" : ["mean", "median", "count"]})
 df_offer[('Price', 'mean')] = df_offer[('Price', 'mean')].map('{:,.2f} ETH'.format)
 df_offer[('Price', 'median')] = df_offer[('Price', 'median')].map('{:,.2f} ETH'.format)
 df_offer.sort_values(by=[('Price', 'count')], ascending=False)
-st.pyplot()
+# st.pyplot()
 # Quel est le top 3 des NFT qui sont le plus vendu ?
 df_sale = df_transac_hist_nodup.where(df_transac_hist_nodup["Event"] == "Sale").groupby(["TokenID"]).agg({"Price" : ["mean", "median", "count"]})
 df_sale[('Price', 'mean')] = df_sale[('Price', 'mean')].map('{:,.2f} ETH'.format)
 df_sale[('Price', 'median')] = df_sale[('Price', 'median')].map('{:,.2f} ETH'.format)
 df_sale.sort_values(by=[('Price', 'mean')], ascending=False)
-
