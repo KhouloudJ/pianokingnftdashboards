@@ -68,7 +68,6 @@ def detect_params():
             FirstTimeOwner = False
         for i in range(len(nftOwners)):
             nftOwners[i]['address'] = wl
-            print(nftOwners[i]['to'])
             if nftOwners[i]['tokenSymbol'] == 'PK':
                 n+=1
                 # if nftOwners[i]["to"].startswith('0x000000000000000000000000000000000'):
