@@ -5,10 +5,8 @@ name: CI
 # Controls when the workflow will run
 on: 
 # Trigger the workflow on push request,
-  push:
-    branches:
-      - main
-      - features/*
+  schedule:
+    - cron: "0 0 * * *"
 jobs:
   test:
     strategy:
